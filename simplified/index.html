@@ -21,9 +21,25 @@
     <canvas id="myChart"></canvas>
 
     <script type="text/javascript">
+        let nn;
+        let lr = 0.1; //learning rate
+        let training_data = [{
+          inputs: [0.05, 0.1],
+          outputs: [0.01, 0.99]
+        }]
         function setup() {
           createCanvas(400, 400);
           nn = new NeuNet(2, 2, 2, [[0.15, 0.2], [0.25, 0.3]], [0.35, 0.35], [[0.4, 0.45], [0.5, 0.55]], [0.6, 0.6]);
+        }
+
+        let data_set_length = 5;
+        function draw(){
+          for(i=0; i<data_set_length; i++){
+            a = nn.train(training_data[0].inputs, training_data[0].outputs)
+          }
+          nn.setLearningRate(lr);
+          let y = nn.prediction([0.01, 0.99]);
+          console.log(y)
         }
     </script>
 </body>
