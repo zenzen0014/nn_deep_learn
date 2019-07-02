@@ -35,5 +35,13 @@ class NeuNet {
         }
         console.log(this.weight_ih)
       }
+      this.setLearningRate();
+      this.setActivationFunction();
+    }
+    setLearningRate(lr = 0.3){
+      this.LearningRate = lr
+    }
+    setActivationFunction(af = sigmoid){
+      this.ActFunc = af
     }
 }
