@@ -69,4 +69,20 @@ class NeuNet {
 
       return outputs.toArray();
     }
+
+    train(input_array, target_array){
+      let inputs = Matrix.fromArray(input_array);
+      let hidden = Matrix.multiply(this.weight_ih, inputs);
+      hidden.add(this.bh);
+      hidden.map(this.ActFunc.func);
+
+      let outputs = Matrix.multiply(this.weight_ho, hidden);
+      outputs.add(this.bo);
+      outputs.map(this.ActFunc.func);
+
+      let targets = Matrix.fromArray(target_array);
+      let outputs_error = Matrix.subtract(targets, outputs)
+      console.log(outputs_error); //total error per epoch
+
+    }
 }
