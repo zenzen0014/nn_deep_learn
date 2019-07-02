@@ -60,11 +60,11 @@ class NeuNet {
     prediction(input_array){
       let inputs = Matrix.fromArray(input_array);
       let hidden = Matrix.multiply(this.weight_ih, inputs);
-      hidden.add(this.bh);
+      hidden.add(this.hbias);
       hidden.map(this.ActFunc.func);
 
       let outputs = Matrix.multiply(this.weight_ho, hidden);
-      outputs.add(this.bo);
+      outputs.add(this.obias);
       outputs.map(this.ActFunc.func);
 
       return outputs.toArray();
@@ -73,16 +73,42 @@ class NeuNet {
     train(input_array, target_array){
       let inputs = Matrix.fromArray(input_array);
       let hidden = Matrix.multiply(this.weight_ih, inputs);
-      hidden.add(this.bh);
+      hidden.add(this.hbias);
       hidden.map(this.ActFunc.func);
 
       let outputs = Matrix.multiply(this.weight_ho, hidden);
-      outputs.add(this.bo);
+      outputs.add(this.obias);
       outputs.map(this.ActFunc.func);
 
       let targets = Matrix.fromArray(target_array);
       let outputs_error = Matrix.subtract(targets, outputs)
       console.log(outputs_error); //total error per epoch
 
+      let gradients = Matrix.map(outputs, this.ActFunc.dfunc);
+      gradients.multiply(outputs_error);
+      gradients.multiply(this.LearningRate);
+
+      let hidden_T = Matrix.transpose(hidden);
+      let weight_ho_delta = Matrix.multiply(gradients, hidden_T)
+      
+      this.weight_h.add(weight_ho_delta);
+      this.obias.add(gradients);
+
+      let who_T = Matrix.transpose(this.weight_h);
+      let hidden_errors = Matrix.multiply(who_T, outputs_error)
+
+      let hgradient = Matrix.map(hidden, this.ActFunc.dfunc);
+      hgradient.multiply(hidden_errors);
+      hgradient.multiply(this.LearningRate);
+
+      let input_T = Matrix.transpose(inputs);
+      let weight_ih_delta = Matrix.multiply(hgradient, input_T)
+
+      this.weight_ih.add(weight_ih_delta);
+      this.hbias.add(hgradient);
+
+      gradients.print();
+      outputs.print();
+      targets.print();
     }
 }
