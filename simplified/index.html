@@ -33,13 +33,25 @@
         }
 
         let data_set_length = 5;
+        let start_time = Date.now();
+        let e = 0;
         function draw(){
           for(i=0; i<data_set_length; i++){
             a = nn.train(training_data[0].inputs, training_data[0].outputs)
           }
           nn.setLearningRate(lr);
           let y = nn.prediction([0.01, 0.99]);
-          console.log(y)
+          if(e % 100 == 0 && e <= 10000){
+            let elapsed_time = (Date.now() - start_time) / 1000;
+            $("#txt").empty().append(`
+              Learning Rate: <b>${lr}</b><br/>
+              Error: <b>${a[1].toFixed(4)}</b><br/>
+              Output: <b>[${y[0].toFixed(4)}] [${y[1].toFixed(4)}]</b><br/>
+              Epoch: <b>${e}</b><br />
+              Elapsed Time: <b>${elapsed_time} Second</b><br/>
+            `)
+          }
+          e++;
         }
     </script>
 </body>
