@@ -1,6 +1,16 @@
 class NeuNet {
     constructor(ilayer, hlayer, olayer, wih = null, who = null, bh = null, bo = null) {
+      if(ilayer instanceof NeuNet){
+        let lyr = ilayer;
+        this.input_nodes = lyr.input_nodes;
+        this.hidden_nodes = lyr.hidden_nodes;
+        this.output_nodes = lyr.output_nodes;
 
+        this.weight_ih = lyr.weight_ih.copy()
+        this.weight_ho = lyr.weight_ho.copy()
+        this.hbias = lyr.hbias.copy()
+        this.obias = lyr.obias.copy()
+      }else{
         this.input_nodes = ilayer;
         this.hidden_nodes = hlayer;
         this.output_nodes = olayer;
@@ -24,5 +34,6 @@ class NeuNet {
             this.obias.randomize();
         }
         console.log(this.weight_ih)
+      }
     }
 }
