@@ -1,3 +1,15 @@
+class ActivationFunction{
+  constructor(func, dfunc) {
+    this.func = func;
+    this.dfunc = dfunc;
+  }
+}
+let sigmoid = new ActivationFunction(
+    a => 1 / (1 + Math.exp(-a)),
+    b => b * (1 - b)
+);
+
+
 class NeuNet {
     constructor(ilayer, hlayer, olayer, wih = null, who = null, bh = null, bo = null) {
       if(ilayer instanceof NeuNet){
