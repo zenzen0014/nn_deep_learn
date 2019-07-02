@@ -53,7 +53,20 @@ class NeuNet {
     setLearningRate(lr = 0.3){
       this.LearningRate = lr
     }
-    setActivationFunction(af = sigmoid){
-      this.ActFunc = af
+    setActivationFunction(func = sigmoid) {
+      this.ActFunc = func
+    }
+
+    prediction(input_array){
+      let inputs = Matrix.fromArray(input_array);
+      let hidden = Matrix.multiply(this.weight_ih, inputs);
+      hidden.add(this.bh);
+      hidden.map(this.ActFunc.func);
+
+      let outputs = Matrix.multiply(this.weight_ho, hidden);
+      outputs.add(this.bo);
+      outputs.map(this.ActFunc.func);
+
+      return outputs.toArray();
     }
 }
