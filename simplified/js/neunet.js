@@ -111,4 +111,8 @@ class NeuNet {
       outputs.print();
       targets.print();
     }
+
+    copy(){
+      return new NeuNet(this);
+    }
 }
