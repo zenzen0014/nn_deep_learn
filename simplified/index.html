@@ -22,7 +22,7 @@
 
     <script type="text/javascript">
         let nn;
-        let lr = 0.1; //learning rate
+        let lr = 0.5; //learning rate
         let training_data = [{
           inputs: [0.05, 0.1],
           outputs: [0.01, 0.99]
@@ -32,7 +32,7 @@
           nn = new NeuNet(2, 2, 2, [[0.15, 0.2], [0.25, 0.3]], [0.35, 0.35], [[0.4, 0.45], [0.5, 0.55]], [0.6, 0.6]);
         }
 
-        let data_set_length = 5;
+        let data_set_length = 50;
         let start_time = Date.now();
         let e = 0;
         function draw(){
@@ -41,7 +41,7 @@
           }
           nn.setLearningRate(lr);
           let y = nn.prediction([0.01, 0.99]);
-          if(e % 100 == 0 && e <= 10000){
+          if( e % 100 == 0 && (e <= 10000 || y[0] == training_data[0].outputs[0] || y[1] == training_data[0].outputs[1])){
             let elapsed_time = (Date.now() - start_time) / 1000;
             $("#txt").empty().append(`
               Learning Rate: <b>${lr}</b><br/>
