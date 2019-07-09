@@ -2,10 +2,10 @@ function loadMNIST(callback) {
   let mnist = {};
 
   let files = {
-    train_images: '/datasets/train-images-idx3-ubyte',
-    train_labels: '/datasets/train-labels-idx1-ubyte',
-    test_images: '/datasets/t10k-images-idx3-ubyte',
-    test_labels: '/datasets/t10k-labels-idx1-ubyte',
+    train_images: './datasets/train-images-idx3-ubyte',
+    train_labels: './datasets/train-labels-idx1-ubyte',
+    test_images: './datasets/t10k-images-idx3-ubyte',
+    test_labels: './datasets/t10k-labels-idx1-ubyte',
   };
   
   return Promise.all(Object.keys(files).map(async file => {
