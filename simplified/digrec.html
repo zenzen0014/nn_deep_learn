@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>mnist</title>
+
+    <script src="./libs/p5.min.js"></script>
+    <script src="./libs/p5.dom.min.js"></script>
+
+    <script src="./libs/mnist.js"></script>
+    <script src="./js/digrec.js"></script>
+    
+    <script src="./js/neunet.js"></script>
+    <script src="./js/matrix.js"></script>
+
+    <style>
+        body {
+            font-size: 30pt;
+        }
+
+        .correct {
+            color: #00CC00
+        }
+
+        .wrong {
+            color: #CC0000
+        }
+    </style>
+
+
+</head>
+
+<body>
+
+    <div id="container"></div>
+
+    <p id="info">
+        Testing: <span id="percent"></span><br />
+        User Guess: <span id="user_guess"></span>
+    </p>
+
+</body>
+
+</html>
