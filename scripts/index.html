@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>my nn app</title>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.js"></script>
+
+    <script src="./libs/p5.min.js"></script>
+    <script src="./libs/p5.dom.min.js"></script>
+
+
+    <script src="./js/matrix.js"></script>
+    <script src="./js/neunet.js"></script>
+
+
+  </head>
+  <body>
+
+    <div id="txt" style="margin-bottom: 25px"></div>
+
+    <canvas id="myChart"></canvas>
+
+    <script type="text/javascript">
+        let nn;
+        let lr = 0.5; //learning rate
+        let training_data = [{
+          inputs: [0.05, 0.1],
+          outputs: [0.01, 0.99]
+        }]
+        function setup() {
+          createCanvas(400, 400);
+          nn = new NeuNet(2, 2, 2, [[0.15, 0.2], [0.25, 0.3]], [0.35, 0.35], [[0.4, 0.45], [0.5, 0.55]], [0.6, 0.6]);
+        }
+
+        let data_set_length = 50;
+        let start_time = Date.now();
+        let e = 0;
+        function draw(){
+          for(i=0; i<data_set_length; i++){
+            a = nn.train(training_data[0].inputs, training_data[0].outputs)
+          }
+          nn.setLearningRate(lr);
+          let y = nn.prediction([0.01, 0.99]);
+          if( e % 100 == 0 && (e <= 10000 || y[0] == training_data[0].outputs[0] || y[1] == training_data[0].outputs[1])){
+            let elapsed_time = (Date.now() - start_time) / 1000;
+            $("#txt").empty().append(`
+              Learning Rate: <b>${lr}</b><br/>
+              Error: <b>${a[1].toFixed(4)}</b><br/>
+              Output: <b>[${y[0].toFixed(4)}] [${y[1].toFixed(4)}]</b><br/>
+              Epoch: <b>${e}</b><br />
+              Elapsed Time: <b>${elapsed_time} Second</b><br/>
+            `)
+          }
+          e++;
+        }
+    </script>
+</body>
+</html>
