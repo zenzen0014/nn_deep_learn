@@ -2,6 +2,7 @@
 <html>
 
 <head>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.js"></script>
 
@@ -11,7 +12,7 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.9.0/addons/p5.sound.min.js"></script>
 
-  <link rel="stylesheet" type="text/css" href="style.css">
+  <!-- <link rel="stylesheet" type="text/css" href="style.css"> -->
 
   <script src="matrix.js"></script>
 
@@ -20,60 +21,144 @@
 
   <meta charset="utf-8" />
 
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+
 </head>
 
 <body>
 
-  <div id="txt" style="margin-bottom: 25px"> </div>
+  <div class="container">
+
+      <form>
+        <div class="row">
+          <div class="col text-center">
+            <img src="soal.PNG">
+          </div>
+        </div>
+        <hr/>
+
+        <div class="row">
+          <div class="col">
+            <div class="form-group">
+              <label for="lr">Learning Rate</label>
+              <input type="text" class="form-control" id="lr" placeholder="Learning Rate">
+            </div>
+          </div>
+
+          <div class="col">
+            <div class="form-group">
+              <label for="epoch">Epoch <code><span id="ec" class="text-muted"></span></code></code></label>
+              <input type="number" class="form-control" id="epoch" placeholder="Epoch">
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col">
+          </div>
+        
+          <div class="col">
+            <button type="button" class="btn btn-outline-primary" id="start" style="width: 100%">START</button>
+          </div>
+        </div>
+
+        <hr/>
+
+        <div class="row">
+          <div class="col">
+            <div class="form-group">
+              <label for="output">Output</label>
+              <input type="number" class="form-control" id="output" placeholder="Output" disabled>
+            </div>
+          </div>
+          
+          <div class="col">
+            <div class="form-group">
+              <label for="mse">MSE</label>
+              <input type="text" class="form-control" id="mse" placeholder="MSE" disabled>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col">
+            <div class="form-group">
+              <label for="etime">Elapsed Time</label>
+              <input type="text" class="form-control" id="etime" placeholder="Elapsed Time" disabled>
+            </div>
+          </div>
+          <div class="col">
+          </div>
+        </div>
+      </form>
+
+      <hr/>
+
+      <form>
+        <div class="row">
+          <div class="col">
+            <div class="form-group">
+              <label for="w1">W1</label>
+              <input type="number" class="form-control" id="w1" placeholder="W1" disabled>
+            </div>
+          </div>
+          <div class="col">
+            <div class="form-group">
+              <label for="w2">W2</label>
+              <input type="number" class="form-control" id="w2" placeholder="W2" disabled>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <div class="form-group">
+              <label for="W3">W3</label>
+              <input type="number" class="form-control" id="w3" placeholder="W3" disabled>
+            </div>
+          </div>
+          <div class="col">
+            <div class="form-group">
+              <label for="W4">W4</label>
+              <input type="number" class="form-control" id="w4" placeholder="W4" disabled>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <div class="form-group">
+              <label for="W5">W5</label>
+              <input type="number" class="form-control" id="w5" placeholder="W5" disabled>
+            </div>
+          </div>
+          <div class="col">
+            <div class="form-group">
+              <label for="W6">W6</label>
+              <input type="number" class="form-control" id="w6" placeholder="W6" disabled>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <div class="form-group">
+              <label for="W7">W7</label>
+              <input type="number" class="form-control" id="w7" placeholder="W7" disabled>
+            </div>
+          </div>
+          <div class="col">
+          </div>
+        </div>
+      </form>
+
+      <hr/>
+
+  </div>
 
 
-  <script type="text/javascript">
-    let nn;
-    let lr = 0.5; //learning rate
-    let training_data = [{
-      inputs: [0.05, 0.1],
-      outputs: [0.01, 0.99]
-    }]
 
-    function setup() {
-      createCanvas(400, 400);
-      nn = new NeuNet(
-        2, 2, 2,
-        [
-          [0.15, 0.2],
-          [0.25, 0.3]
-        ],
-        [0.35, 0.35],
-        [
-          [0.4, 0.45],
-          [0.5, 0.55]
-        ],
-        [0.6, 0.6]);
-    }
 
-    let data_set_length = 50;
-    let start_time = Date.now();
-    let e = 0;
-
-    function draw() {
-      for (i = 0; i < data_set_length; i++) {
-        a = nn.train(training_data[0].inputs, training_data[0].outputs)
-      }
-      nn.setLearningRate(lr);
-      let y = nn.prediction([0.01, 0.99]);
-      if (e % 100 == 0 && (e <= 10000 || y[0] == training_data[0].outputs[0] || y[1] == training_data[0].outputs[1])) {
-        let elapsed_time = (Date.now() - start_time) / 1000;
-        $("#txt").empty().append(`
-              Learning Rate: <b>${lr}</b><br/>
-              Error: <b>${a[1].toFixed(4)}</b><br/>
-              Output: <b>[${y[0].toFixed(4)}] [${y[1].toFixed(4)}]</b><br/>
-              Epoch: <b>${e}</b><br />
-              Elapsed Time: <b>${elapsed_time} Second</b><br/>
-            `)
-      }
-      e++;
-    }
-  </script>
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
 
 </body>
