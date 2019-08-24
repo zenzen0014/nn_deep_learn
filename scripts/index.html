@@ -154,8 +154,97 @@
   </div>
 
 
+  <script type="text/javascript">
+    let nn;
+    
+    function generate(lr, e) {
+      let training_data = [{
+        inputs: [0.05, 0.1],
+        outputs: [0.99]
+      }];
 
-  
+      let start_time = Date.now();
+      nn = new NeuNet(
+        2, 2, 1, 1, //i, h, hh, o
+        [
+          [0.2, -0.3],
+          [0.15, -0.5]
+        ], // w 1..4
+        [1, 1], // b -> h
+        [
+          [-0.4, 0.3]
+        ], // w 5, 6
+        [0.5],//b -> hh
+        [
+          [0.25]
+        ], // w7
+        [1] // b -> o
+      );
+
+      for (n = 0; n < e; n++) {
+          for (i = 0; i < e; i++) {
+            a = nn.train(training_data[0].inputs, training_data[0].outputs)
+          }
+          nn.setLearningRate(lr);
+
+          let y = nn.prediction(training_data[0].inputs);
+          let elapsed_time = (Date.now() - start_time) / 1000;                
+
+          $("#ec").text(`[${(n+1)} / ${parseInt(e)}]`);
+
+          if(n == parseInt(e - 1)){
+            $("#mse").val(`${a[0].toFixed(4)} %`);
+            $("#output").val(`${y[0].toFixed(4)}`);
+            $("#epoch").val(e);
+            $("#etime").val(`${elapsed_time} Second`);
+            console.log((n+1) , parseInt(e));
+          }
+          if(n % 100 == 0){
+            console.log((n+1) , parseInt(e));
+          }
+      }
+    }
+
+
+    
+    $("#lr").focus();
+
+
+    $("#start").click(function () {
+      // swal_wait();
+      generate($("#lr").val(), $("#epoch").val());
+    })
+
+
+    function swal_wait(){
+      Swal.fire({
+          title: 'Please Wait',
+          html: 'Will close after training finished',
+          closeOnClickOutside: false,
+          allowOutsideClick: false,
+          showConfirmButton: false,
+          onOpen: () => {
+          },
+          onClose: () => {}
+      });
+    }
+
+    function swal_done(){
+      const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000
+      })
+
+      Toast.fire({
+        type: 'success',
+        title: 'Trained successfully'
+      })
+    }
+  </script>
+
+
 
 
 
